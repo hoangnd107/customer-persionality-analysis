@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 from itertools import combinations
 from mpl_toolkits.mplot3d import Axes3D
@@ -20,11 +19,47 @@ class DBSCANClustering:
         self.labels_silhouette = None
         self.labels_davies = None
         
+    def region_query(self, point_idx, eps):
+        neighbors = []
+        for idx, point in enumerate(self.data):
+            if np.linalg.norm(self.data[point_idx] - point) <= eps:
+                neighbors.append(idx)
+        return neighbors
+
+    def expand_cluster(self, labels, point_idx, cluster_id, eps, min_samples):
+        neighbors = self.region_query(point_idx, eps)
+        if len(neighbors) < min_samples:
+            labels[point_idx] = -1  # Điểm nhiễu
+            return False
+        else:
+            labels[point_idx] = cluster_id
+            i = 0
+            while i < len(neighbors):
+                neighbor_idx = neighbors[i]
+                if labels[neighbor_idx] == -1:  # Nếu là điểm nhiễu, gán vào cụm
+                    labels[neighbor_idx] = cluster_id
+                elif labels[neighbor_idx] == 0:  # Nếu chưa được thăm, thêm vào cụm
+                    labels[neighbor_idx] = cluster_id
+                    new_neighbors = self.region_query(neighbor_idx, eps)
+                    if len(new_neighbors) >= min_samples:
+                        neighbors.extend(new_neighbors)
+                i += 1
+            return True
+
+    def dbscan(self, eps, min_samples):
+        labels = np.zeros(len(self.data), dtype=int)  # 0: chưa thăm, -1: nhiễu, >0: cụm
+        cluster_id = 0
+
+        for point_idx in range(len(self.data)):
+            if labels[point_idx] == 0:  # Nếu điểm chưa được thăm
+                if self.expand_cluster(labels, point_idx, cluster_id + 1, eps, min_samples):
+                    cluster_id += 1
+        return labels
+
     def run(self):
         for eps in self.eps_values:
             for min_samples in self.min_samples_values:
-                dbscan = DBSCAN(eps=eps, min_samples=min_samples)
-                labels = dbscan.fit_predict(self.data)
+                labels = self.dbscan(eps, min_samples)
                 
                 if len(set(labels)) > 1:
                     silhouette = silhouette_score(self.data, labels)
@@ -44,8 +79,8 @@ class DBSCANClustering:
         print(f"\nBest Silhouette Score: eps={self.best_eps_silhouette}, min_samples={self.best_min_samples_silhouette}, Score={self.best_silhouette_score}")
         print(f"Best Davies-Bouldin Score: eps={self.best_eps_davies}, min_samples={self.best_min_samples_davies}, Score={self.best_davies_bouldin_score}")
         
-        self.labels_silhouette = DBSCAN(eps=self.best_eps_silhouette, min_samples=self.best_min_samples_silhouette).fit_predict(self.data)
-        self.labels_davies = DBSCAN(eps=self.best_eps_davies, min_samples=self.best_min_samples_davies).fit_predict(self.data)
+        self.labels_silhouette = self.dbscan(self.best_eps_silhouette, self.best_min_samples_silhouette)
+        self.labels_davies = self.dbscan(self.best_eps_davies, self.best_min_samples_davies)
 
 class DataVisualizer:
     def __init__(self, raw_data, labels_silhouette, labels_davies, numeric_columns):

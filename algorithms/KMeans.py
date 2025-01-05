@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-file_path = r"predata.csv"
+file_path = "../data/predata.csv"
 df = pd.read_csv(file_path)
 numeric_cols = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
 data = df[numeric_cols].values

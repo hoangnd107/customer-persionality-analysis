@@ -6,7 +6,7 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 import plotly.express as px
 
-file_path = "predata.csv"
+file_path = "../data/predata.csv"
 df = pd.read_csv(file_path)
 
 numeric_cols = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']

@@ -107,7 +107,7 @@ class DataVisualizer:
             plt.legend()
             plt.show()
             
-file_path = "data.csv"
+file_path = "../data/data.csv"
 data = pd.read_csv(file_path)
 
 filtered_data = data.drop(columns=['CustomerID'], errors='ignore')

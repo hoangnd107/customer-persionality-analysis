@@ -76,7 +76,7 @@ class DataPreprocessor:
         print("Summary statistics:")
         print(self.df.describe())
 
-preprocessor = DataPreprocessor(r"C:\Users\nduyh\py\customer-persionality-analysis\data.csv")
+preprocessor = DataPreprocessor("data.csv")
 preprocessor.load_data()
 preprocessor.validate_data()
 preprocessor.handle_missing_values()

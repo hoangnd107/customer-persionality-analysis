@@ -4,9 +4,9 @@
 
 This project focuses on analyzing customer personalities using various clustering algorithms to segment customers based on their behavioral patterns and characteristics. The analysis helps businesses better understand their customer base and tailor their marketing strategies accordingly.
 
-_Customer segmentation workflow_
-
 ![Customer Segmentation Process](process.png)
+
+<p align="center"><em>Customer segmentation workflow</em></p>
 
 ## Algorithms Used
 

@@ -18,6 +18,9 @@ class DataPreprocessor:
         print("\n--- Initial Data Information ---")
         print(self.df.info())
 
+    def drop_unnecessary_columns(self):
+        self.df = self.df.drop('CustomerID', axis=1)
+
     def handle_missing_values(self):
         if self.df.isnull().values.any():
             print("\nWarning: Dataset contains missing values. Handling missing data...")
@@ -31,11 +34,6 @@ class DataPreprocessor:
             print("Missing values handled. New shape:", self.df.shape)
         else:
             print("\nNo missing values detected.")
-
-    def drop_unnecessary_columns(self):
-        if 'CustomerID' in self.df.columns:
-            self.df = self.df.drop('CustomerID', axis=1)
-            print("\nDropped 'CustomerID' column.")
 
     def encode_categorical_columns(self):
         le = LabelEncoder()
@@ -60,7 +58,7 @@ class DataPreprocessor:
 
     def check_correlations(self):
         print("\n--- Correlation Matrix ---")
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(8, 5))
         sns.heatmap(self.df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
         plt.title("Correlation Matrix")
         plt.show()
@@ -76,7 +74,7 @@ class DataPreprocessor:
         print("Summary statistics:")
         print(self.df.describe())
 
-preprocessor = DataPreprocessor("data.csv")
+preprocessor = DataPreprocessor(r"../data/data.csv")
 preprocessor.load_data()
 preprocessor.validate_data()
 preprocessor.handle_missing_values()

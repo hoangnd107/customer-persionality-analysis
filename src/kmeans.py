@@ -128,8 +128,7 @@ class KMeansClustering:
         plt.show()
 
 if __name__ == '__main__':
-    # file_path = r"../data/data.csv"
-    file_path = r"C:\Users\nduyh\py\customer-persionality-analysis\data\data.csv"
+    file_path = r"../data/data.csv"
     numeric_cols = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
     kmeans = KMeansClustering(file_path, numeric_cols)
     kmeans.elbow_method()

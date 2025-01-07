@@ -35,7 +35,7 @@ class AgglomerativeCluster:
         print(f"Davies-Bouldin Score: {db_score:.4f}")
 
     def plot_3d_scatter(self):
-        colors = ['red', 'blue', 'green', 'purple', 'orange']
+        colors = ['orange', 'purple', 'red', 'green', 'blue']
         fig = px.scatter_3d(
             self.df,
             x='Age',
@@ -71,7 +71,8 @@ class AgglomerativeCluster:
         self.plot_2d_scatter('Annual Income (k$)', 'Spending Score (1-100)', 'Annual Income vs Spending Score', 'Annual Income (k$)', 'Spending Score (1-100)')
 
 if __name__ == "__main__":
-    agc = AgglomerativeCluster(r"../data/data.csv")
+    # agc = AgglomerativeCluster(r"../data/data.csv")
+    agc = AgglomerativeCluster(r"C:\Users\nduyh\py\customer-persionality-analysis\data\data.csv")
     agc.plot_dendrogram()
     agc.fit_predict()
     agc.evaluate_clustering()

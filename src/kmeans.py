@@ -72,6 +72,7 @@ class KMeansClustering:
         print(f"Davies-Bouldin Score: {db_score:.4f}")
 
     def plot_3d(self):
+        colors = ['blue', 'green', 'red', 'orange']
         fig = px.scatter_3d(
             self.df,
             x='Age',
@@ -79,23 +80,14 @@ class KMeansClustering:
             z='Spending Score (1-100)',
             color='Cluster Label',
             title='3D Customer Segmentation',
-            labels={
-                'Age': 'Age',
-                'Annual Income (k$)': 'Annual Income (k$)',
-                'Spending Score (1-100)': 'Spending Score (1-100)',
-                'Cluster Label': 'Cluster Label'
-            },
-            color_discrete_sequence=['blue', 'green', 'red', 'orange']
+            labels={'Cluster': 'Cluster'},
+            color_discrete_sequence=colors
         )
         fig.update_layout(
-            scene=dict(
-                xaxis_title='Age',
-                yaxis_title='Annual Income (k$)',
-                zaxis_title='Spending Score (1-100)'
-            ),
-            legend_title='Cluster Label'
+            legend_title_text='Cluster',
+            coloraxis_colorbar=None
         )
-        fig.show()
+        fig.update_traces(marker=dict(size=6))
 
     def plot_2d(self):
         plt.figure(figsize=(8, 5))
@@ -136,7 +128,8 @@ class KMeansClustering:
         plt.show()
 
 if __name__ == '__main__':
-    file_path = r"../data/data.csv"
+    # file_path = r"../data/data.csv"
+    file_path = r"C:\Users\nduyh\py\customer-persionality-analysis\data\data.csv"
     numeric_cols = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
     kmeans = KMeansClustering(file_path, numeric_cols)
     kmeans.elbow_method()
